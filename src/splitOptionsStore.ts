@@ -1,6 +1,7 @@
 import { derived, writable } from 'svelte/store';
 import type { SplitOptions } from './types';
 
+export const horizontal = writable(false);
 export const initialPrimarySize = writable('50%');
 export const minPrimarySize = writable('0');
 export const minSecondarySize = writable('0');
@@ -10,6 +11,7 @@ export const splitterType = writable('default');
 
 export const splitOptions = derived(
   [
+    horizontal,
     initialPrimarySize,
     minPrimarySize,
     minSecondarySize,
@@ -18,6 +20,7 @@ export const splitOptions = derived(
     splitterType,
   ],
   ([
+    $horizontal,
     $initialPrimarySize,
     $minPrimarySize,
     $minSecondarySize,
@@ -26,12 +29,13 @@ export const splitOptions = derived(
     $splitterType,
   ]) => {
       return {
-        initialPrimarySize: initialPrimarySize,
-        minPrimarySize: minPrimarySize,
-        minSecondarySize: minSecondarySize,
-        resetOnDoubleClick: resetOnDoubleClick,
-        splitterSize: splitterSize,
-        splitterType: splitterType,
+        horizontal: $horizontal,
+        initialPrimarySize: $initialPrimarySize,
+        minPrimarySize: $minPrimarySize,
+        minSecondarySize: $minSecondarySize,
+        resetOnDoubleClick: $resetOnDoubleClick,
+        splitterSize: $splitterSize,
+        splitterType: $splitterType,
       };
   }
 );
