@@ -12,26 +12,32 @@
   export let minPrimarySize: string = "0";
   export let minSecondarySize: string = "0";
   export let splitterSize: string = "7px";
-  export let resetOnDoubleClick: boolean = false;
+  export let resetOnDoubleClick: boolean = true;
 
-  let contentWidth: number;
-  let contentHeight: number;
-  let primaryWidth: number;
-  let primaryHeight: number;
+  let percent: (number | undefined) = undefined;
 
-  $: contentSize = horizontal ? contentHeight : contentWidth;
-  $: primarySize = horizontal ? primaryHeight : primaryWidth;
-  
+  // ----- Size tracking ----- //
+  let clientWidth: number;
+  let clientHeight: number;
+  let primaryClientWidth: number;
+  let primaryClientHeight: number;
+
+  $: clientSize = horizontal ? clientHeight : clientWidth;
+  $: primaryClientSize = horizontal ? primaryClientHeight : primaryClientWidth;
+
+  // ----- Drag tracking ----- //
   let startPosition: number;
   let startPrimarySize: number;
   let dragging: boolean;
 
-  let percent = 50;
+  // ----- Dynamic styles ----- //
+
+  $: primarySize = percent !== undefined ? `${percent}%` : initialPrimarySize;
 
   $: splitCssVars = {
-    "--primary-size": `${percent}%`,
-    "--min-primary-size": `0`,
-    "--min-secondary-size": "0",
+    "--primary-size": `${primarySize}`,
+    "--min-primary-size": `${minPrimarySize}`,
+    "--min-secondary-size": `${minSecondarySize}`,
     "--splitter-size": `${splitterSize}`,
   };
 
@@ -39,12 +45,14 @@
     .map(([key, value]) => `${key}:${value}`)
     .join(";");
 
-  $: splitClass = horizontal ? 'split horizontal' : 'split vertical';
+  $: splitClass = horizontal ? "split horizontal" : "split vertical";
 
-  const onPointerDown = (event: MousePointerEvent) => {    
+  // ----- Event handlers ----- //
+
+  const onPointerDown = (event: MousePointerEvent) => {
     event.currentTarget.setPointerCapture(event.pointerId);
     startPosition = horizontal ? event.clientY : event.clientX;
-    startPrimarySize = primarySize;
+    startPrimarySize = primaryClientSize;
     dragging = true;
   };
 
@@ -52,8 +60,8 @@
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
       const position = horizontal ? event.clientY : event.clientX;
       let newPrimarySize = startPrimarySize + (position - startPosition);
-      newPrimarySize = Math.max(0, Math.min(newPrimarySize, contentSize));
-      const newPercent = (newPrimarySize / contentSize) * 100;
+      newPrimarySize = Math.max(0, Math.min(newPrimarySize, clientSize));
+      const newPercent = (newPrimarySize / clientSize) * 100;
       percent = newPercent;
     }
   };
@@ -63,10 +71,23 @@
     event.currentTarget.releasePointerCapture(event.pointerId);
     dragging = false;
   };
+
+  const onDoubleClick = () => {    
+    resetOnDoubleClick && (percent = undefined);
+  };
 </script>
 
-<div class={splitClass} bind:clientWidth={contentWidth} bind:clientHeight={contentHeight} style={splitStyle}>
-  <div class="primary" bind:clientWidth={primaryWidth} bind:clientHeight={primaryHeight}>
+<div
+  class={splitClass}
+  bind:clientWidth={clientWidth}
+  bind:clientHeight={clientHeight}
+  style={splitStyle}
+>
+  <div
+    class="primary"
+    bind:clientWidth={primaryClientWidth}
+    bind:clientHeight={primaryClientHeight}
+  >
     <slot name="primary" />
   </div>
   <div
@@ -74,9 +95,10 @@
     on:pointerdown={onPointerDown}
     on:pointermove={onPointerMove}
     on:pointerup={onPointerUp}
+    on:dblclick={onDoubleClick}
   >
     <slot name="splitter">
-      <DefaultSplitter horizontal={horizontal} />
+      <DefaultSplitter {horizontal} />
     </slot>
   </div>
   <div class="secondary">
@@ -92,7 +114,6 @@
     outline: none;
     overflow: hidden;
     display: grid;
-    
   }
 
   .split.vertical {
@@ -107,7 +128,7 @@
     grid-template-columns: 1fr;
     grid-template-rows:
       minmax(var(--min-primary-size), var(--primary-size)) var(--splitter-size)
-      minmax(var(--min-secondary-size), 1fr);    
+      minmax(var(--min-secondary-size), 1fr);
     grid-template-areas: "primary" "splitter" "secondary";
   }
 

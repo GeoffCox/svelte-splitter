@@ -57,6 +57,7 @@ import OptionsEditor from "./OptionsEditor.svelte";
     outline: none;
     overflow: hidden;
     grid-area: content;
+    padding: 20px;
   }
 
   .footer {
