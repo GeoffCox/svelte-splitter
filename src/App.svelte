@@ -42,6 +42,7 @@ import OptionsEditor from "./OptionsEditor.svelte";
   }
 
   .header {
+    box-sizing: border-box;
     font-size: 14pt;
     width: 100%;
     outline: none;
@@ -53,6 +54,7 @@ import OptionsEditor from "./OptionsEditor.svelte";
   }
 
   .content {
+    box-sizing: border-box;
     width: 100%;
     outline: none;
     overflow: hidden;
@@ -61,6 +63,7 @@ import OptionsEditor from "./OptionsEditor.svelte";
   }
 
   .footer {
+    box-sizing: border-box;
     width: 100%;
     outline: none;
     overflow: hidden;

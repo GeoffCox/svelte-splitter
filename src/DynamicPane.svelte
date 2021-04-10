@@ -1,39 +1,56 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher } from "svelte";
   import Split from "./Split.svelte";
   import { splitOptions as initialSplitOptions } from "./splitOptionsStore";
 
   const dispatch = createEventDispatcher();
 
-  let isSplit = false;  
+  let isSplit = false;
   let splitOptions;
 
   const onSplit = () => {
     isSplit = true;
-    splitOptions = {...$initialSplitOptions};
+    splitOptions = { ...$initialSplitOptions };
   };
 
   const onRequestRemoveSplit = () => {
-    dispatch('removeSplit');
+    dispatch("removeSplit");
   };
 
   const onRemoveSplit = () => {
-    isSplit = false;    
+    isSplit = false;
   };
-  
+
+  const onChanged = (event) => {
+    console.log(event?.detail);
+  };
 </script>
 
 <div class="dynamic-pane">
   {#if isSplit}
-    <Split horizontal={splitOptions?.horizontal} initialPrimarySize={splitOptions?.initialPrimarySize}>
-      <svelte:self slot="primary" on:removeSplit={onRemoveSplit} />
-      <svelte:self slot="secondary" on:removeSplit={onRemoveSplit}/>
+    <Split
+      horizontal={splitOptions?.horizontal}
+      initialPrimarySize={splitOptions?.initialPrimarySize}
+      on:changed={onChanged}
+    >
+      <svelte:fragment slot="primary">
+        <svelte:self on:removeSplit={onRemoveSplit} />
+      </svelte:fragment>
+      <svelte:fragment slot="secondary">
+        <svelte:self on:removeSplit={onRemoveSplit} />
+      </svelte:fragment>
     </Split>
   {:else}
     <div class="actions-area">
       <div class="action-buttons">
         <button class="action-button" on:click={onSplit}> Split </button>
-        <button class="action-button" title="Remove split" on:click={onRequestRemoveSplit}> X </button>
+        <button
+          class="action-button"
+          title="Remove split"
+          on:click={onRequestRemoveSplit}
+        >
+          X
+        </button>
       </div>
     </div>
   {/if}

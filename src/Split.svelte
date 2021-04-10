@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { onMount, tick } from "svelte";
-
+  import { createEventDispatcher, onMount, tick } from "svelte";
   import DefaultSplitter from "./DefaultSplitter.svelte";
 
   type MousePointerEvent = PointerEvent & {
@@ -14,21 +13,54 @@
   export let splitterSize: string = "7px";
   export let resetOnDoubleClick: boolean = true;
 
-  let percent: (number | undefined) = undefined;
-
   // ----- Size tracking ----- //
   let clientWidth: number;
   let clientHeight: number;
   let primaryClientWidth: number;
   let primaryClientHeight: number;
+  let splitterClientWidth: number;
+  let splitterClientHeight: number;
+  let secondaryClientWidth: number;
+  let secondaryClientHeight: number;
 
   $: clientSize = horizontal ? clientHeight : clientWidth;
   $: primaryClientSize = horizontal ? primaryClientHeight : primaryClientWidth;
+  $: splitterClientSize = horizontal
+    ? splitterClientHeight
+    : splitterClientWidth;
+  $: secondaryClientSize = horizontal
+    ? secondaryClientHeight
+    : secondaryClientWidth;
+
+  const constrainPercent = (value: number) => {
+    return Math.max(0, value, Math.min(value, 100));
+  };
+
+  $: measuredPercent = constrainPercent(
+    Math.ceil(
+      ((primaryClientSize - splitterClientSize / 2) /
+        (clientSize - splitterClientSize)) *
+        100
+    )
+  );
+
+  let percent: number | undefined = undefined;
 
   // ----- Drag tracking ----- //
   let startPosition: number;
   let startPrimarySize: number;
   let dragging: boolean;
+
+  // ----- Events ----- //
+
+  const dispatch = createEventDispatcher();
+
+  $: dispatch("changed", {
+    primarySize: primaryClientSize,
+    splitterSize: splitterClientSize,
+    secondarySize: secondaryClientSize,
+    percent: measuredPercent,
+  });
 
   // ----- Dynamic styles ----- //
 
@@ -72,17 +104,21 @@
     dragging = false;
   };
 
-  const onDoubleClick = () => {    
+  const onDoubleClick = () => {
     resetOnDoubleClick && (percent = undefined);
   };
 </script>
 
-<div
-  class={splitClass}
-  bind:clientWidth={clientWidth}
-  bind:clientHeight={clientHeight}
-  style={splitStyle}
->
+<!--
+  @component
+  Provides a a draggable splitter between two controls.
+  
+  - The split can be a vertical left/right or horizontal top/bottom.
+  - The left/right and top/bottom are referred to as primary/secondary.
+  - Options include initial primary size, minimum primary/secondary sizes, and splitter size.
+  - Subscribe to the changed event to monitor the sizes and the split percent.
+-->
+<div class={splitClass} bind:clientWidth bind:clientHeight style={splitStyle}>
   <div
     class="primary"
     bind:clientWidth={primaryClientWidth}
@@ -92,6 +128,8 @@
   </div>
   <div
     class="splitter"
+    bind:clientWidth={splitterClientWidth}
+    bind:clientHeight={splitterClientHeight}
     on:pointerdown={onPointerDown}
     on:pointermove={onPointerMove}
     on:pointerup={onPointerUp}
@@ -101,7 +139,11 @@
       <DefaultSplitter {horizontal} />
     </slot>
   </div>
-  <div class="secondary">
+  <div
+    class="secondary"
+    bind:clientWidth={secondaryClientWidth}
+    bind:clientHeight={secondaryClientHeight}
+  >
     <slot name="secondary" />
   </div>
 </div>
