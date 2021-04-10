@@ -1,10 +1,16 @@
 <script lang="ts">
-  import { createEventDispatcher, onMount, tick } from "svelte";
+  import { createEventDispatcher, tick } from "svelte";
   import DefaultSplitter from "./DefaultSplitter.svelte";
 
-  type MousePointerEvent = PointerEvent & {
+  type SplitterPointerEvent = PointerEvent & {
     currentTarget: EventTarget & HTMLDivElement;
   };
+
+  type SplitterKeyboardEvent = KeyboardEvent & {
+    currentTarget: EventTarget & HTMLDivElement;
+  };
+
+  // ----- Props ----- //
 
   export let horizontal: boolean = false;
   export let initialPrimarySize: string = "50%";
@@ -14,6 +20,7 @@
   export let resetOnDoubleClick: boolean = true;
 
   // ----- Size tracking ----- //
+
   let clientWidth: number;
   let clientHeight: number;
   let primaryClientWidth: number;
@@ -33,12 +40,12 @@
     : secondaryClientWidth;
 
   const constrainPercent = (value: number) => {
-    return Math.max(0, value, Math.min(value, 100));
+    return Math.max(0.0, Math.min(value, 100.0));
   };
 
   $: measuredPercent = constrainPercent(
     Math.ceil(
-      ((primaryClientSize - splitterClientSize / 2) /
+      ((primaryClientSize - splitterClientSize) /
         (clientSize - splitterClientSize)) *
         100
     )
@@ -81,14 +88,14 @@
 
   // ----- Event handlers ----- //
 
-  const onPointerDown = (event: MousePointerEvent) => {
+  const onPointerDown = (event: SplitterPointerEvent) => {
     event.currentTarget.setPointerCapture(event.pointerId);
     startPosition = horizontal ? event.clientY : event.clientX;
     startPrimarySize = primaryClientSize;
     dragging = true;
   };
 
-  const onPointerMove = (event: MousePointerEvent) => {
+  const onPointerMove = (event: SplitterPointerEvent) => {
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
       const position = horizontal ? event.clientY : event.clientX;
       let newPrimarySize = startPrimarySize + (position - startPosition);
@@ -98,7 +105,7 @@
     }
   };
 
-  const onPointerUp = (event: MousePointerEvent) => {
+  const onPointerUp = (event: SplitterPointerEvent) => {
     //console.log(`onPointerUp`);
     event.currentTarget.releasePointerCapture(event.pointerId);
     dragging = false;
@@ -106,6 +113,31 @@
 
   const onDoubleClick = () => {
     resetOnDoubleClick && (percent = undefined);
+  };
+
+  const onKeyDown = (event: SplitterKeyboardEvent) => {
+    const origPercent = percent || measuredPercent;
+
+    if (horizontal) {
+      switch (event.key) {
+        case "ArrowUp":
+          percent = constrainPercent(origPercent - 1);
+          break;
+        case "ArrowDown":
+          percent = constrainPercent(origPercent + 1);
+          break;
+      }
+    } else {
+      switch (event.key) {
+        case "ArrowLeft":
+          percent = constrainPercent(origPercent - 1);
+          break;
+        case "ArrowRight":
+          percent = constrainPercent(origPercent + 1);
+          break;
+      }
+      
+    }
   };
 </script>
 
@@ -134,6 +166,7 @@
     on:pointermove={onPointerMove}
     on:pointerup={onPointerUp}
     on:dblclick={onDoubleClick}
+    on:keydown={onKeyDown}    
   >
     <slot name="splitter">
       <DefaultSplitter {horizontal} />
@@ -185,19 +218,17 @@
     grid-area: primary;
     height: 100%;
     width: 100%;
-    background: rgb(136, 223, 252);
   }
 
   .splitter {
     grid-area: splitter;
     height: 100%;
-    width: 100%;
+    width: 100%;      
   }
 
   .secondary {
     grid-area: secondary;
     height: 100%;
     width: 100%;
-    background: rgb(136, 223, 252);
   }
 </style>

@@ -28,8 +28,8 @@
   $: splitterClass = horizontal ? "splitter horizontal" : "splitter vertical";  
 </script>
 
-<div class={splitterClass} bind:clientWidth={clientWidth} bind:clientHeight={clientHeight}>
-  <div class="line" style={lineStyle} />
+<div class={splitterClass} bind:clientWidth={clientWidth} bind:clientHeight={clientHeight} tabindex="0">
+  <div class="line" style={lineStyle}/>
 </div>
 
 <style>
@@ -71,6 +71,10 @@
   }
 
   .splitter:hover > .line {
+    background: var(--splitter-line-hover-color);
+  }
+
+  .splitter:focus  > .line {
     background: var(--splitter-line-hover-color);
   }
 </style>
