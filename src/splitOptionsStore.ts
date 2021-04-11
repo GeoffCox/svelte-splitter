@@ -36,6 +36,6 @@ export const splitOptions = derived(
         resetOnDoubleClick: $resetOnDoubleClick,
         splitterSize: $splitterSize,
         splitterType: $splitterType,
-      };
+      } as SplitOptions;
   }
 );

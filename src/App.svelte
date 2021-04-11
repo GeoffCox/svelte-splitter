@@ -1,15 +1,14 @@
-<script lang="ts">  
+<script lang="ts">
   import DynamicPane from "./DynamicPane.svelte";
-import OptionsEditor from "./OptionsEditor.svelte";
+  import OptionsEditor from "./OptionsEditor.svelte";
+  import { v4 as uuid } from "uuid";  
 </script>
 
 <div class="root">
   <div class="app">
-    <div class="header">
-      Splitter
-    </div>
+    <div class="header">Splitter</div>
     <div class="content">
-      <DynamicPane />
+      <DynamicPane id={uuid()} />
     </div>
     <div class="footer">
       <OptionsEditor />

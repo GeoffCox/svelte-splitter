@@ -54,7 +54,7 @@
   let percent: number | undefined = undefined;
 
   // ----- Drag tracking ----- //
-  
+
   let startPosition: number;
   let startPrimarySize: number;
   let dragging: boolean;
@@ -62,12 +62,19 @@
   // ----- Interface Functions -----//
 
   /**
-   * Sets the percent of the splitter.
+   * Gets the current measured percent of this splitter.
+   */
+  export const getPercent = (): number => {
+    return measuredPercent;
+  };
+
+  /**
+   * Sets the percent of this splitter.
    * @param value The percentage. This will be constrained to (0..100)
    */
   export const setPercent = (value: number) => {
     percent = constrainPercent(value);
-  }
+  };
 
   // ----- Events ----- //
 
@@ -77,7 +84,8 @@
     percent: measuredPercent,
     primarySize: primaryClientSize,
     splitterSize: splitterClientSize,
-    secondarySize: secondaryClientSize,    
+    secondarySize: secondaryClientSize,
+    dragging,
   });
 
   // ----- Dynamic styles ----- //
@@ -117,7 +125,6 @@
   };
 
   const onPointerUp = (event: SplitterPointerEvent) => {
-    //console.log(`onPointerUp`);
     event.currentTarget.releasePointerCapture(event.pointerId);
     dragging = false;
   };
@@ -129,26 +136,39 @@
   const onKeyDown = (event: SplitterKeyboardEvent) => {
     const origPercent = percent || measuredPercent;
 
-    // only move for vanilla arrow keys
-    if (horizontal && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-      switch (event.key) {
-        case "ArrowUp":
-          percent = constrainPercent(origPercent - 1);
-          break;
-        case "ArrowDown":
-          percent = constrainPercent(origPercent + 1);
-          break;
+    // only move for vanilla keys
+    if (!event.ctrlKey && !event.shiftKey && !event.altKey) {
+      switch (event.code) {
+        case "Home":
+          percent = constrainPercent(0);
+          return;
+        case "End":
+          percent = constrainPercent(100);
+          return;
+        case "Space":
+          percent = undefined;
+          return;
       }
-    } else {
-      switch (event.key) {
-        case "ArrowLeft":
-          percent = constrainPercent(origPercent - 1);
-          break;
-        case "ArrowRight":
-          percent = constrainPercent(origPercent + 1);
-          break;
+
+      if (horizontal) {
+        switch (event.code) {
+          case "ArrowUp":
+            percent = constrainPercent(origPercent - 1);
+            return;
+          case "ArrowDown":
+            percent = constrainPercent(origPercent + 1);
+            return;
+        }
+      } else {
+        switch (event.code) {
+          case "ArrowLeft":
+            percent = constrainPercent(origPercent - 1);
+            return;
+          case "ArrowRight":
+            percent = constrainPercent(origPercent + 1);
+            return;
+        }
       }
-      
     }
   };
 </script>
@@ -179,7 +199,7 @@
     on:pointermove={onPointerMove}
     on:pointerup={onPointerUp}
     on:dblclick={onDoubleClick}
-    on:keydown={onKeyDown}    
+    on:keydown={onKeyDown}
   >
     <slot name="splitter">
       <DefaultSplitter {horizontal} />
@@ -194,7 +214,7 @@
   </div>
 </div>
 
-<style>  
+<style>
   .split {
     width: 100%;
     height: 100%;
@@ -236,7 +256,7 @@
   .splitter {
     grid-area: splitter;
     height: 100%;
-    width: 100%;      
+    width: 100%;
   }
 
   .secondary {
