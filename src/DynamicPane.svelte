@@ -31,6 +31,10 @@
     <Split
       horizontal={splitOptions?.horizontal}
       initialPrimarySize={splitOptions?.initialPrimarySize}
+      minPrimarySize={splitOptions?.minPrimarySize}
+      minSecondarySize={splitOptions?.minSecondarySize}
+      splitterSize={splitOptions?.splitterSize}
+      resetOnDoubleClick={splitOptions?.resetOnDoubleClick}      
       on:changed={onChanged}
     >
       <svelte:fragment slot="primary">

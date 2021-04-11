@@ -54,19 +54,30 @@
   let percent: number | undefined = undefined;
 
   // ----- Drag tracking ----- //
+  
   let startPosition: number;
   let startPrimarySize: number;
   let dragging: boolean;
+
+  // ----- Interface Functions -----//
+
+  /**
+   * Sets the percent of the splitter.
+   * @param value The percentage. This will be constrained to (0..100)
+   */
+  export const setPercent = (value: number) => {
+    percent = constrainPercent(value);
+  }
 
   // ----- Events ----- //
 
   const dispatch = createEventDispatcher();
 
   $: dispatch("changed", {
+    percent: measuredPercent,
     primarySize: primaryClientSize,
     splitterSize: splitterClientSize,
-    secondarySize: secondaryClientSize,
-    percent: measuredPercent,
+    secondarySize: secondaryClientSize,    
   });
 
   // ----- Dynamic styles ----- //
@@ -118,7 +129,8 @@
   const onKeyDown = (event: SplitterKeyboardEvent) => {
     const origPercent = percent || measuredPercent;
 
-    if (horizontal) {
+    // only move for vanilla arrow keys
+    if (horizontal && !event.ctrlKey && !event.shiftKey && !event.altKey) {
       switch (event.key) {
         case "ArrowUp":
           percent = constrainPercent(origPercent - 1);
@@ -148,7 +160,8 @@
   - The split can be a vertical left/right or horizontal top/bottom.
   - The left/right and top/bottom are referred to as primary/secondary.
   - Options include initial primary size, minimum primary/secondary sizes, and splitter size.
-  - Subscribe to the changed event to monitor the sizes and the split percent.
+  - Subscribe to the changed event to monitor split percent and sizes of primary, splitter, and secondary.
+  - Call the setPercent method to directly control the splitter position.
 -->
 <div class={splitClass} bind:clientWidth bind:clientHeight style={splitStyle}>
   <div
@@ -181,7 +194,7 @@
   </div>
 </div>
 
-<style>
+<style>  
   .split {
     width: 100%;
     height: 100%;
