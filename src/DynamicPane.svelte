@@ -3,13 +3,14 @@
   import Split from "./Split.svelte";
   import { splitOptions as initialSplitOptions } from "./splitOptionsStore";
   import { splitInfoById, updatePercentFrozen } from "./splitInfoStore";
-  import { v4 as uuid } from "uuid";
+  import { v4 as uuid } from "uuid";  
 
   const dispatch = createEventDispatcher();
 
   // ----- Props ----- //
 
   export let id: string;
+  export let hasParent: boolean = false;
 
   // ----- Initialization ----- //
 
@@ -49,7 +50,11 @@
     const primaryId = splitInfo?.primaryId;
     const secondaryId = splitInfo?.secondaryId;
 
-    if (id && removeId && (removeId === primaryId || removeId === secondaryId)) {
+    if (
+      id &&
+      removeId &&
+      (removeId === primaryId || removeId === secondaryId)
+    ) {
       updatePercentFrozen.set(true);
       await tick();
       const oldId = id;
@@ -69,7 +74,6 @@
 
   // ----- Event handlers ----- //
 
-  
   const onSplit = () => {
     splitInfoById.update((n) => {
       n[id] = {
@@ -89,7 +93,7 @@
   };
 
   const onRemovePrimarySplit = async () => {
-    await removeSplit(splitInfo?.primaryId);    
+    await removeSplit(splitInfo?.primaryId);
   };
 
   const onRemoveSecondarySplit = async () => {
@@ -127,6 +131,7 @@
       <svelte:fragment slot="primary">
         <svelte:self
           id={splitInfo?.primaryId}
+          hasParent={true}
           bind:this={primaryPane}
           on:removeSplit={onRemovePrimarySplit}
         />
@@ -134,6 +139,7 @@
       <svelte:fragment slot="secondary">
         <svelte:self
           id={splitInfo?.secondaryId}
+          hasParent={true}
           bind:this={secondaryPane}
           on:removeSplit={onRemoveSecondarySplit}
         />
@@ -143,13 +149,15 @@
     <div class="actions-area">
       <div class="action-buttons">
         <button class="action-button" on:click={onSplit}> Split </button>
-        <button
-          class="action-button"
-          title="Remove split"
-          on:click={onRequestRemoveSplit}
-        >
-          X
-        </button>
+        {#if hasParent}
+          <button
+            class="action-button"
+            title="Remove split"
+            on:click={onRequestRemoveSplit}
+          >
+            X
+          </button>
+        {/if}
       </div>
     </div>
   {/if}

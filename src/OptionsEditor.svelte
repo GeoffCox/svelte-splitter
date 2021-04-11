@@ -43,13 +43,7 @@
     <div class="property-label">Minimum primary size</div>
     <input class="property-input" bind:value={$minPrimarySize} />
     <div class="property-label">Minimum secondary size</div>
-    <input class="property-input" bind:value={$minSecondarySize} />
-    <div class="property-label">Reset on double click</div>
-    <input
-      class="property-checkbox"
-      type="checkbox"
-      bind:checked={$resetOnDoubleClick}
-    />
+    <input class="property-input" bind:value={$minSecondarySize} />    
     <div class="property-label">Splitter size</div>
     <input class="property-input" bind:value={$splitterSize} />
     <div class="property-label">Splitter type</div>
@@ -85,6 +79,12 @@
         </div>
       </div>
     </div>
+    <div class="property-label">Reset on double click</div>
+    <input
+      class="property-checkbox"
+      type="checkbox"
+      bind:checked={$resetOnDoubleClick}
+    />
   </div>
 </div>
 
