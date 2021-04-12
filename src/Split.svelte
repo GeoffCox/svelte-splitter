@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher, setContext, tick } from "svelte";
-import { writable } from "svelte/store";
-import { splitterContextKey } from "./constants";
+  import { writable } from "svelte/store";
+  import { splitterContextKey } from "./constants";
   import DefaultSplitter from "./DefaultSplitter.svelte";
 
   type SplitterPointerEvent = PointerEvent & {
@@ -80,11 +80,11 @@ import { splitterContextKey } from "./constants";
 
   // ----- Splitter Context -----//
 
-  let splitterContext = writable({ horizontal, dragging});
+  let splitterContext = writable({ horizontal, dragging });
 
-  $: splitterContext.set({ horizontal, dragging});
+  $: splitterContext.set({ horizontal, dragging });
 
-  $: setContext(splitterContextKey, splitterContext);  
+  $: setContext(splitterContextKey, splitterContext);
 
   // ----- Events ----- //
 
