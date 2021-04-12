@@ -1,3 +1,13 @@
+// ----- Split Component Types -----//
+
+import type { Writable } from "svelte/store";
+
+export type SplitterContextInfo = { dragging: boolean; horizontal: boolean };
+
+export type SplitterContextStore = Writable<SplitterContextInfo>;
+
+//----- Demo Types -----// 
+
 /**
  * The type of splitter to allow for visual customization.
  */

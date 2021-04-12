@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { createEventDispatcher, tick } from "svelte";
+  import { createEventDispatcher, setContext, tick } from "svelte";
+import { writable } from "svelte/store";
+import { splitterContextKey } from "./constants";
   import DefaultSplitter from "./DefaultSplitter.svelte";
 
   type SplitterPointerEvent = PointerEvent & {
@@ -75,6 +77,14 @@
   export const setPercent = (value: number) => {
     percent = constrainPercent(value);
   };
+
+  // ----- Splitter Context -----//
+
+  let splitterContext = writable({ horizontal, dragging});
+
+  $: splitterContext.set({ horizontal, dragging});
+
+  $: setContext(splitterContextKey, splitterContext);  
 
   // ----- Events ----- //
 
@@ -202,7 +212,7 @@
     on:keydown={onKeyDown}
   >
     <slot name="splitter">
-      <DefaultSplitter {horizontal} />
+      <DefaultSplitter />
     </slot>
   </div>
   <div

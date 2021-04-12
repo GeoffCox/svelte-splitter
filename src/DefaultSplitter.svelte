@@ -1,10 +1,16 @@
 <script lang="ts">
-  export let horizontal: boolean = false;
-  export let dragging: boolean = false;
+  import { getContext } from "svelte";
+  import { splitterContextKey } from "./constants";
+  import type { SplitterContextStore } from "./types";
 
   export let color: string = "silver";
   export let hoverColor: string = "gray";
   export let dragColor: string = "black";
+
+  let splitterContext = getContext<SplitterContextStore>(splitterContextKey);
+
+  $: dragging = $splitterContext.dragging;
+  $: horizontal = $splitterContext.horizontal;
 
   let clientWidth;
   let clientHeight;
@@ -25,11 +31,11 @@
     .map(([key, value]) => `${key}:${value}`)
     .join(";");
 
-  $: splitterClass = horizontal ? "splitter horizontal" : "splitter vertical";  
+  $: splitterClass = horizontal ? "splitter horizontal" : "splitter vertical";
 </script>
 
-<div class={splitterClass} bind:clientWidth={clientWidth} bind:clientHeight={clientHeight} tabindex="0">
-  <div class="line" style={lineStyle}/>
+<div class={splitterClass} bind:clientWidth bind:clientHeight tabindex="0">
+  <div class="line" style={lineStyle} />
 </div>
 
 <style>
@@ -53,7 +59,7 @@
 
   /* The thin line within a default splitter hit area */
   .line {
-    background: var(--splitter-line-color);    
+    background: var(--splitter-line-color);
   }
 
   .splitter.vertical > .line {
@@ -63,7 +69,7 @@
     width: var(--splitter-line-size);
   }
 
-  .splitter.horizontal > .line {    
+  .splitter.horizontal > .line {
     height: var(--splitter-line-size);
     margin-left: 0;
     margin-top: var(--splitter-line-margin);
@@ -74,7 +80,7 @@
     background: var(--splitter-line-hover-color);
   }
 
-  .splitter:focus  > .line {
+  .splitter:focus > .line {
     background: var(--splitter-line-hover-color);
   }
 </style>

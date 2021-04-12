@@ -3,7 +3,10 @@
   import Split from "./Split.svelte";
   import { splitOptions as initialSplitOptions } from "./splitOptionsStore";
   import { splitInfoById, updatePercentFrozen } from "./splitInfoStore";
-  import { v4 as uuid } from "uuid";  
+  import { v4 as uuid } from "uuid";
+  import DefaultSplitter from "./DefaultSplitter.svelte";
+  import SolidSplitter from "./SolidSplitter.svelte";
+  import StripedSplitter from "./StripedSplitter.svelte";
 
   const dispatch = createEventDispatcher();
 
@@ -135,6 +138,15 @@
           bind:this={primaryPane}
           on:removeSplit={onRemovePrimarySplit}
         />
+      </svelte:fragment>
+      <svelte:fragment slot="splitter">
+        {#if splitOptions?.splitterType === "solid"}
+          <SolidSplitter />
+        {:else if splitOptions?.splitterType === "striped"}
+          <StripedSplitter />
+        {:else}
+          <DefaultSplitter/>
+        {/if}
       </svelte:fragment>
       <svelte:fragment slot="secondary">
         <svelte:self
