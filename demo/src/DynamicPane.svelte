@@ -1,10 +1,11 @@
 <script lang="ts">
-  import { createEventDispatcher, onMount, tick } from "svelte";
-  import Split from "./Split.svelte";
+  import { createEventDispatcher, onMount, tick } from "svelte";    
+  import { Split, DefaultSplitter } from "svelte-splitter";
   import { splitOptions as initialSplitOptions } from "./splitOptionsStore";
   import { splitInfoById, updatePercentFrozen } from "./splitInfoStore";
   import { v4 as uuid } from "uuid";
-  import DefaultSplitter from "./DefaultSplitter.svelte";
+
+
   import SolidSplitter from "./SolidSplitter.svelte";
   import StripedSplitter from "./StripedSplitter.svelte";
 
@@ -145,7 +146,7 @@
         {:else if splitOptions?.splitterType === "striped"}
           <StripedSplitter />
         {:else}
-          <DefaultSplitter/>
+          <DefaultSplitter />
         {/if}
       </svelte:fragment>
       <svelte:fragment slot="secondary">

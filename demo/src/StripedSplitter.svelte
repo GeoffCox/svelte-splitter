@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext } from "svelte";
-  import { splitterContextKey } from "./constants";
-  import type { SplitterContextStore } from "./types";
+  import { splitterContextKey } from "svelte-splitter";
+  import type { SplitterContextStore } from "svelte-splitter";
 
   export let color1: string = "#00ccff";
   export let color2: string = "#53ddff";

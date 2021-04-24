@@ -80,11 +80,13 @@
 
   // ----- Splitter Context -----//
 
-  let splitterContext = writable({ horizontal, dragging });
+  const splitterContext = writable({ horizontal, dragging });
+  setContext(splitterContextKey, splitterContext);
 
-  $: splitterContext.set({ horizontal, dragging });
-
-  $: setContext(splitterContextKey, splitterContext);
+  $: {
+    console.log(`setting store: ${horizontal} ${dragging}`);
+    splitterContext.set({ horizontal, dragging });
+  }
 
   // ----- Events ----- //
 

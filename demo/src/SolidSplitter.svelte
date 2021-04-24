@@ -1,16 +1,21 @@
 <script lang="ts">
-  import { getContext } from "svelte";
-  import { splitterContextKey } from "./constants";
-  import type { SplitterContextStore } from "./types";
-
+  import { getContext, hasContext, onMount } from "svelte";
+  import { splitterContextKey } from "svelte-splitter";
+  import type { SplitterContextStore } from "svelte-splitter";
+  
   export let color: string = "silver";
   export let hoverColor: string = "gray";
   export let dragColor: string = "black";
 
-  let splitterContext = getContext<SplitterContextStore>(splitterContextKey);
+  console.log(`has context: ${hasContext(splitterContextKey)}`);
+  let splitterContext: SplitterContextStore = getContext<SplitterContextStore>(splitterContextKey);
 
-  $: dragging = $splitterContext.dragging;
-  $: horizontal = $splitterContext.horizontal;
+  $: dragging = $splitterContext?.dragging;
+  $: horizontal = $splitterContext?.horizontal;
+
+  $: console.log(`$splitterContext ${$splitterContext}`);
+  $: console.log(`dragging ${dragging}`);
+  $: console.log(`horizontal ${horizontal}`);
 
   $: splitterStyles = {
     "--splitter-color": dragging ? dragColor : color,
