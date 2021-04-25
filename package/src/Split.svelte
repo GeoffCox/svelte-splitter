@@ -14,11 +14,39 @@
 
   // ----- Props ----- //
 
+  /**
+   * Add this attribute or set to true to create a top/bottom split.
+   * Set to false to create a left|right split.
+   */
   export let horizontal: boolean = false;
+  /**
+   * The initial width/height of the left/top pane.
+   * Width is specified as a CSS unit (e.g. %, fr, px).
+   * The default is 50%.
+   */
   export let initialPrimarySize: string = "50%";
+  /**
+   * The preferred minimum width/height of the left/top pane.
+   * Specified as a CSS unit (e.g. %, fr, px).
+   * The default is 0.
+   */
   export let minPrimarySize: string = "0";
+  /**
+   * The preferred minimum width/height of the right/bottom pane.
+   * Specified as a CSS unit (e.g. %, fr, px).
+   * The default is 0.
+   */
   export let minSecondarySize: string = "0";
+  /**
+   * The width of the splitter between the panes.
+   * Specified as a CSS unit (e.g. %, fr, px).
+   * The default is 7px.
+   */
   export let splitterSize: string = "7px";
+  /**
+   * When true, if the user double clicks the splitter it will reset to its initial position.
+   * The default is false.
+   */
   export let resetOnDoubleClick: boolean = true;
 
   // ----- Size tracking ----- //
@@ -150,13 +178,7 @@
 
     // only move for vanilla keys
     if (!event.ctrlKey && !event.shiftKey && !event.altKey) {
-      switch (event.code) {
-        case "Home":
-          percent = constrainPercent(0);
-          return;
-        case "End":
-          percent = constrainPercent(100);
-          return;
+      switch (event.code) {        
         case "Space":
           percent = undefined;
           return;
@@ -189,11 +211,15 @@
   @component
   Provides a a draggable splitter between two controls.
   
-  - The split can be a vertical left/right or horizontal top/bottom.
-  - The left/right and top/bottom are referred to as primary/secondary.
-  - Options include initial primary size, minimum primary/secondary sizes, and splitter size.
+  - The split can be a vertical (left|right) or horizontal (top/bottom).
+  - The left|right and top/bottom are referred to as primary and secondary.
+  - You can set the initial primary size, minimum primary and secondary sizes, and splitter size.
+  - Slots are provided for the primary and secondary.
+  - An optional slot for the splitter allow replacement of the DefaultSplitter.
   - Subscribe to the changed event to monitor split percent and sizes of primary, splitter, and secondary.
   - Call the setPercent method to directly control the splitter position.
+  - Arrow keys move the splitter in 1% increments when the splitter is focused.
+  - Space bar key resets the splitter when the splitter is focused.
 -->
 <div class={splitClass} bind:clientWidth bind:clientHeight style={splitStyle}>
   <div

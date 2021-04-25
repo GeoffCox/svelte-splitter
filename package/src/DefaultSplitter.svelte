@@ -1,8 +1,12 @@
 <script lang="ts">
+  /**
+   * The default splitter which provides a thin line within a larger mouse hit area.
+   */
   import { getContext } from "svelte";
   import { splitterContextKey } from "./constants";
   import type { SplitterContextStore } from "./types";
 
+  // ----- Props -----
   export let color: string = "silver";
   export let hoverColor: string = "gray";
   export let dragColor: string = "black";
@@ -34,6 +38,10 @@
   $: splitterClass = horizontal ? "splitter horizontal" : "splitter vertical";
 </script>
 
+<!--
+  @component
+  The default splitter provides a thin visual line within a larger mouse hit area.
+-->
 <div class={splitterClass} bind:clientWidth bind:clientHeight tabindex="0">
   <div class="line" style={lineStyle} />
 </div>
@@ -57,9 +65,9 @@
     cursor: row-resize;
   }
 
-  /* The thin line within a default splitter hit area */
   .line {
     background: var(--splitter-line-color);
+    transition: background-color 300ms;
   }
 
   .splitter.vertical > .line {
@@ -77,7 +85,7 @@
   }
 
   .splitter:hover > .line {
-    background: var(--splitter-line-hover-color);
+    background: var(--splitter-line-hover-color);    
   }
 
   .splitter:focus > .line {
