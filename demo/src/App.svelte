@@ -4,6 +4,10 @@
   import { v4 as uuid } from "uuid";
 </script>
 
+<!--
+  @component
+  This demo application demonstrates using the svelte-split Split component.
+-->
 <div class="root">
   <div class="app">
     <div class="header">@geoffcox/svelte-splitter demo</div>
@@ -17,6 +21,7 @@
 </div>
 
 <style>
+  /* Absolute positioning provides an SPA layout */
   .root {
     box-sizing: border-box;
     position: absolute;
@@ -57,8 +62,7 @@
     width: 100%;
     outline: none;
     overflow: hidden;
-    grid-area: content;
-    padding: 20px;
+    grid-area: content;    
   }
 
   .footer {

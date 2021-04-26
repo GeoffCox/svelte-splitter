@@ -40,6 +40,7 @@
     width: 100%;
     user-select: none;
     background: var(--splitter-color);
+    transition: background-color 300ms;
   }
 
   .splitter.vertical {

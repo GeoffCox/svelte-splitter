@@ -120,6 +120,10 @@
   };
 </script>
 
+<!--
+  @component
+  Provides adding and removing a Split component to itself.
+-->
 <div class="dynamic-pane">
   {#if isSplit}
     <Split
@@ -177,6 +181,7 @@
 </div>
 
 <style>
+  /* The 1fr by 1fr grid centers the content */
   .dynamic-pane {
     width: 100%;
     height: 100%;
@@ -184,8 +189,7 @@
     overflow: hidden;
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: 1fr;
-    grid-template-areas: "content";
+    grid-template-columns: 1fr;    
     user-select: none;
   }
 
