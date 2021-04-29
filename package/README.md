@@ -2,7 +2,7 @@
 
 A resizable splitter for Svelte that leverages CSS display:grid
 
-[Live Demo](https://geoffcox.github.io/demos/svelte-splitter/index.html)
+[Live Demo](https://geoffcox.github.io/demos/svelte-splitter)
 
 ## Features
 - Vertical (left|right) and Horizontal (top/bottom) splitting
