@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher, setContext, tick } from "svelte";
+  import { createEventDispatcher, setContext } from "svelte";
   import { writable } from "svelte/store";
   import { splitterContextKey } from "./constants";
   import DefaultSplitter from "./DefaultSplitter.svelte";

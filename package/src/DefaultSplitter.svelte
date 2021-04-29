@@ -13,8 +13,8 @@
   $: dragging = $splitterContext.dragging;
   $: horizontal = $splitterContext.horizontal;
 
-  let clientWidth;
-  let clientHeight;
+  let clientWidth : number;
+  let clientHeight : number;
 
   $: clientSize = horizontal ? clientHeight : clientWidth;
 
