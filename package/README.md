@@ -1,4 +1,4 @@
-# @geoffcox/react-splitter
+# @geoffcox/svelte-splitter
 
 A resizable splitter for Svelte that leverages CSS display:grid
 
