@@ -1,12 +1,32 @@
 {
   "name": "svelte-splitter",
   "version": "1.0.0",
+  "description": "A splitter for Svelte that leverages CSS grid templates for simple and consistent resizing.",
+  "author": "Geoff Cox",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GeoffCox/svelte-splitter/issues"
+  },
+  "homepage": "https://github.com/GeoffCox/svelte-splitter/blob/main/package/README.md",
+  "keywords": [
+    "split",
+    "splitter",
+    "resize",
+    "resizer",
+    "pane",
+    "svelte",
+    "typescript"
+  ],
   "module": "dist/index.mjs",
   "main": "dist/index.js",
   "svelte": "src/index.ts",
   "types": "src/index.d.ts",
+  "files": [
+    "src",
+    "dist"
+  ],
   "scripts": {
-    "compile": "tsc --emitDeclarationOnly",
+    "emitTypes": "tsc --emitDeclarationOnly",
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "prepublishOnly": "npm run build",
@@ -30,12 +50,5 @@
     "tslib": "^2.0.0",
     "typescript": "^4.0.0"
   },
-  "keywords": [
-    "svelte"
-  ],
-  "files": [
-    "src",
-    "dist"
-  ],
   "dependencies": {}
 }
