@@ -1,7 +1,4 @@
 <script lang="ts">
-  /**
-   * The default splitter which provides a thin line within a larger mouse hit area.
-   */
   import { getContext } from "svelte";
   import { splitterContextKey } from "./constants";
   import type { SplitterContextStore } from "./types";

@@ -1,6 +1,6 @@
 {
   "name": "svelte-splitter",
-  "version": "1.0.0",  
+  "version": "1.0.0",
   "module": "dist/index.mjs",
   "main": "dist/index.js",
   "svelte": "src/index.ts",

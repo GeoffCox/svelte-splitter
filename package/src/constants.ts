@@ -1,6 +1,4 @@
-// ----- Split Component Constants -----//
-
 /**
- * The context key for splitter components to use to get the dragging, horizontal, and other state from Split.
+ * The context key for custom splitter components to use to get state from the Split parent component.
  */
 export const splitterContextKey = { name: "SplitterContext" };
