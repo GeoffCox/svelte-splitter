@@ -1,38 +1,35 @@
 <script lang="ts">
-  import { getContext } from "svelte";
-  import { splitterContextKey } from "./constants";
-  import type { SplitterContextStore } from "./types";
+  import { getContext } from 'svelte';
+  import { splitterContextKey } from './constants';
+  import type { SplitterContextStore } from './types';
 
   // ----- Props -----
-  export let color: string = "silver";
-  export let hoverColor: string = "gray";
-  export let dragColor: string = "black";
+  export let color: string = 'silver';
+  export let hoverColor: string = 'gray';
+  export let dragColor: string = 'black';
 
   let splitterContext = getContext<SplitterContextStore>(splitterContextKey);
 
   $: dragging = $splitterContext.dragging;
   $: horizontal = $splitterContext.horizontal;
 
-  let clientWidth : number;
-  let clientHeight : number;
+  let clientWidth: number;
+  let clientHeight: number;
 
   $: clientSize = horizontal ? clientHeight : clientWidth;
 
   $: lineStyles = {
-    "--splitter-line-margin": `${Math.max(
-      0,
-      Math.floor(clientSize / 2) - 1
-    )}px`,
-    "--splitter-line-size": `${clientSize % 2 === 0 ? 2 : 3}px`,
-    "--splitter-line-color": dragging ? dragColor : color,
-    "--splitter-line-hover-color": dragging ? dragColor : hoverColor,
+    '--splitter-line-margin': `${Math.max(0, Math.floor(clientSize / 2) - 1)}px`,
+    '--splitter-line-size': `${clientSize % 2 === 0 ? 2 : 3}px`,
+    '--splitter-line-color': dragging ? dragColor : color,
+    '--splitter-line-hover-color': dragging ? dragColor : hoverColor,
   };
 
   $: lineStyle = Object.entries(lineStyles)
     .map(([key, value]) => `${key}:${value}`)
-    .join(";");
+    .join(';');
 
-  $: splitterClass = horizontal ? "splitter horizontal" : "splitter vertical";
+  $: splitterClass = horizontal ? 'splitter horizontal' : 'splitter vertical';
 </script>
 
 <!--
@@ -82,7 +79,7 @@
   }
 
   .splitter:hover > .line {
-    background: var(--splitter-line-hover-color);    
+    background: var(--splitter-line-hover-color);
   }
 
   .splitter:focus > .line {

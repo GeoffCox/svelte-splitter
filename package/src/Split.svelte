@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { createEventDispatcher, setContext } from "svelte";
-  import { writable } from "svelte/store";
-  import { splitterContextKey } from "./constants";
-  import DefaultSplitter from "./DefaultSplitter.svelte";
+  import { createEventDispatcher, setContext } from 'svelte';
+  import { writable } from 'svelte/store';
+  import { splitterContextKey } from './constants';
+  import DefaultSplitter from './DefaultSplitter.svelte';
 
   type SplitterPointerEvent = PointerEvent & {
     currentTarget: EventTarget & HTMLDivElement;
@@ -24,25 +24,25 @@
    * Width is specified as a CSS unit (e.g. %, fr, px).
    * The default is 50%.
    */
-  export let initialPrimarySize: string = "50%";
+  export let initialPrimarySize: string = '50%';
   /**
    * The preferred minimum width/height of the left/top pane.
    * Specified as a CSS unit (e.g. %, fr, px).
    * The default is 0.
    */
-  export let minPrimarySize: string = "0";
+  export let minPrimarySize: string = '0';
   /**
    * The preferred minimum width/height of the right/bottom pane.
    * Specified as a CSS unit (e.g. %, fr, px).
    * The default is 0.
    */
-  export let minSecondarySize: string = "0";
+  export let minSecondarySize: string = '0';
   /**
    * The width of the splitter between the panes.
    * Specified as a CSS unit (e.g. %, fr, px).
    * The default is 7px.
    */
-  export let splitterSize: string = "7px";
+  export let splitterSize: string = '7px';
   /**
    * When true, if the user double clicks the splitter it will reset to its initial position.
    * The default is false.
@@ -62,23 +62,15 @@
 
   $: clientSize = horizontal ? clientHeight : clientWidth;
   $: primaryClientSize = horizontal ? primaryClientHeight : primaryClientWidth;
-  $: splitterClientSize = horizontal
-    ? splitterClientHeight
-    : splitterClientWidth;
-  $: secondaryClientSize = horizontal
-    ? secondaryClientHeight
-    : secondaryClientWidth;
+  $: splitterClientSize = horizontal ? splitterClientHeight : splitterClientWidth;
+  $: secondaryClientSize = horizontal ? secondaryClientHeight : secondaryClientWidth;
 
   const constrainPercent = (value: number) => {
     return Math.max(0.0, Math.min(value, 100.0));
   };
 
   $: measuredPercent = constrainPercent(
-    Math.ceil(
-      ((primaryClientSize - splitterClientSize) /
-        (clientSize - splitterClientSize)) *
-        100
-    )
+    Math.ceil(((primaryClientSize - splitterClientSize) / (clientSize - splitterClientSize)) * 100)
   );
 
   let percent: number | undefined = undefined;
@@ -87,7 +79,7 @@
 
   let startPosition: number;
   let startPrimarySize: number;
-  let dragging: boolean;
+  let dragging: boolean = false;
 
   // ----- Interface Functions -----//
 
@@ -111,7 +103,7 @@
   const splitterContext = writable({ horizontal, dragging });
   setContext(splitterContextKey, splitterContext);
 
-  $: {    
+  $: {
     splitterContext.set({ horizontal, dragging });
   }
 
@@ -119,7 +111,7 @@
 
   const dispatch = createEventDispatcher();
 
-  $: dispatch("changed", {
+  $: dispatch('changed', {
     percent: measuredPercent,
     primarySize: primaryClientSize,
     splitterSize: splitterClientSize,
@@ -132,17 +124,17 @@
   $: primarySize = percent !== undefined ? `${percent}%` : initialPrimarySize;
 
   $: splitCssVars = {
-    "--primary-size": `${primarySize}`,
-    "--min-primary-size": `${minPrimarySize}`,
-    "--min-secondary-size": `${minSecondarySize}`,
-    "--splitter-size": `${splitterSize}`,
+    '--primary-size': `${primarySize}`,
+    '--min-primary-size': `${minPrimarySize}`,
+    '--min-secondary-size': `${minSecondarySize}`,
+    '--splitter-size': `${splitterSize}`,
   };
 
   $: splitStyle = Object.entries(splitCssVars)
     .map(([key, value]) => `${key}:${value}`)
-    .join(";");
+    .join(';');
 
-  $: splitClass = horizontal ? "split horizontal" : "split vertical";
+  $: splitClass = horizontal ? 'split horizontal' : 'split vertical';
 
   // ----- Event handlers ----- //
 
@@ -177,27 +169,27 @@
 
     // only move for vanilla keys
     if (!event.ctrlKey && !event.shiftKey && !event.altKey) {
-      switch (event.code) {        
-        case "Space":
+      switch (event.code) {
+        case 'Space':
           percent = undefined;
           return;
       }
 
       if (horizontal) {
         switch (event.code) {
-          case "ArrowUp":
+          case 'ArrowUp':
             percent = constrainPercent(origPercent - 1);
             return;
-          case "ArrowDown":
+          case 'ArrowDown':
             percent = constrainPercent(origPercent + 1);
             return;
         }
       } else {
         switch (event.code) {
-          case "ArrowLeft":
+          case 'ArrowLeft':
             percent = constrainPercent(origPercent - 1);
             return;
-          case "ArrowRight":
+          case 'ArrowRight':
             percent = constrainPercent(origPercent + 1);
             return;
         }
@@ -221,11 +213,7 @@
   - Space bar key resets the splitter when the splitter is focused.
 -->
 <div class={splitClass} bind:clientWidth bind:clientHeight style={splitStyle}>
-  <div
-    class="primary"
-    bind:clientWidth={primaryClientWidth}
-    bind:clientHeight={primaryClientHeight}
-  >
+  <div class="primary" bind:clientWidth={primaryClientWidth} bind:clientHeight={primaryClientHeight}>
     <slot name="primary" />
   </div>
   <div
@@ -242,11 +230,7 @@
       <DefaultSplitter />
     </slot>
   </div>
-  <div
-    class="secondary"
-    bind:clientWidth={secondaryClientWidth}
-    bind:clientHeight={secondaryClientHeight}
-  >
+  <div class="secondary" bind:clientWidth={secondaryClientWidth} bind:clientHeight={secondaryClientHeight}>
     <slot name="secondary" />
   </div>
 </div>
@@ -266,7 +250,7 @@
       minmax(var(--min-primary-size), var(--primary-size)) var(--splitter-size)
       minmax(var(--min-secondary-size), 1fr);
     grid-template-rows: 1fr;
-    grid-template-areas: "primary splitter secondary";
+    grid-template-areas: 'primary splitter secondary';
   }
 
   .split.horizontal {
@@ -274,7 +258,7 @@
     grid-template-rows:
       minmax(var(--min-primary-size), var(--primary-size)) var(--splitter-size)
       minmax(var(--min-secondary-size), 1fr);
-    grid-template-areas: "primary" "splitter" "secondary";
+    grid-template-areas: 'primary' 'splitter' 'secondary';
   }
 
   .split > div {

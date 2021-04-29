@@ -1,2 +1,2 @@
-import { SplitterContextInfo, SplitterContextStore} from './types';
-export { SplitterContextInfo, SplitterContextStore};
+import { SplitterContextInfo, SplitterContextStore } from './types';
+export { SplitterContextInfo, SplitterContextStore };
