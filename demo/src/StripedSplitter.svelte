@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext } from "svelte";
-  import { splitterContextKey } from "svelte-splitter";
-  import type { SplitterContextStore } from "svelte-splitter";
+  import { splitterContextKey } from "@geoffcox/svelte-splitter";
+  import type { SplitterContextStore } from "@geoffcox/svelte-splitter";
   import Stripes from "./Stripes.svelte";
   import { tweenedColor } from "./tweenedColor";
 

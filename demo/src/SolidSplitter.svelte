@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext, hasContext, onMount } from "svelte";
-  import { splitterContextKey } from "svelte-splitter";
-  import type { SplitterContextStore } from "svelte-splitter";
+  import { splitterContextKey } from "@geoffcox/svelte-splitter";
+  import type { SplitterContextStore } from "@geoffcox/svelte-splitter";
   
   export let color: string = "silver";
   export let hoverColor: string = "gray";

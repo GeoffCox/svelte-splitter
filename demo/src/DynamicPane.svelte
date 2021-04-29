@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher, onMount, tick } from "svelte";    
-  import { Split, DefaultSplitter } from "svelte-splitter";
+  import { Split, DefaultSplitter } from "@geoffcox/svelte-splitter";
   import { splitOptions as initialSplitOptions } from "./splitOptionsStore";
   import { splitInfoById, updatePercentFrozen } from "./splitInfoStore";
   import { v4 as uuid } from "uuid";

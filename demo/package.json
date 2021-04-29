@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "sirv-cli": "^1.0.0",
-    "svelte-splitter": "file:../package",
+    "@geoffcox/svelte-splitter": "file:../package",
     "uuid": "^8.3.2"
   }
 }
