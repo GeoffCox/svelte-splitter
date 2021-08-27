@@ -144,11 +144,12 @@ Subscribe to the changed event to get updates.
 
 ```ts
 const onChanged = (event) => {
-    console.log(`percent: ${event.percent}`);
-    console.log(`primarySize: ${event.primarySize}`);
-    console.log(`splitterSize: ${event.splitterSize}`);
-    console.log(`secondarySize: ${event.secondarySize}`);
-    console.log(`dragging: ${event.dragging}`);
+    const {details: {percent, primarySize, splitterSize, secondarySize, dragging}} = event;
+    console.log(`percent: ${percent}`);
+    console.log(`primarySize: ${primarySize}`);
+    console.log(`splitterSize: ${splitterSize}`);
+    console.log(`secondarySize: ${secondarySize}`);
+    console.log(`dragging: ${dragging}`);
 };
 ```ts
 
@@ -185,3 +186,5 @@ const flipSplitPercent = () => {
 ## 1.0.0 - First project publication
 - Based on the 2.1.0 version of @geoffcox/react-splitter
 - Updated to idomatic Svelte
+
+## 1.0.1 - Updated live demo link
