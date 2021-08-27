@@ -1,6 +1,6 @@
 {
   "name": "@geoffcox/svelte-splitter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A splitter for Svelte that leverages CSS grid templates for simple and consistent resizing.",
   "author": "Geoff Cox",
   "license": "MIT",
