@@ -33,6 +33,11 @@ To create vertical or horizontal splits you only need the `Split` component.
 The default creates a left(50%) | right(50%) split, no minimum pane sizes, and renders the default splitter.
 
 ```svelte
+
+<script>
+import { Split } from "@geoffcox/svelte-splitter"
+</script>
+
 <Split>
   <div slot="primary">This is the left pane.</div>
   <div slot="secondary">This is the right pane.<div>
